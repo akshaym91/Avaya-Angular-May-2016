@@ -30,11 +30,8 @@
 			<option value="divide">Divide</option>
 		</select>
 		<input type="number" name="" id="txtInputTwo" ng-model="advancedCalculator.inputTwo">
+		<input type="button" value="Calculate" ng-click="calculate()">
 		<br>
-		<!-- <input type="button" value="Add" id="btnAdd" ng-click="advancedCalculator.add()">
-		<input type="button" value="Subtract" id="btnSubtract" ng-click="advancedCalculator.subtract()">
-		<input type="button" value="Multiply" id="btnMultiply" ng-click="advancedCalculator.multiply()">
-		<input type="button" value="Divide" id="btnDivide" ng-click="advancedCalculator.divide()"> -->
 		<div id="divResult" ng-bind="advancedCalculator.result">[Result]</div>
 	</div>
 </body>

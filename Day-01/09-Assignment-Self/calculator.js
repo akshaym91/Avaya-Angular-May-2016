@@ -29,19 +29,21 @@ Calculator.prototype.divide = function() {
 angular
     .module('calculator', [])
     .controller('calcController1', function($scope) {
-      $scope.calculator = new Calculator();
+        $scope.calculator = new Calculator();
     })
     .controller('calcController2', function($scope) {
+        $scope.advancedCalculator = new Calculator();
+        $scope.operator = '';
+        $scope.calculate = function() {
+            if ($scope.operator == 'add') {
+                $scope.advancedCalculator.add()
+            } else if ($scope.operator == 'subtract') {
+                $scope.advancedCalculator.subtract()
+            } else if ($scope.operator == 'multiply') {
+                $scope.advancedCalculator.multiply()
+            } else if ($scope.operator == 'divide') {
+                $scope.advancedCalculator.divide()
+            }
+        }
 
-      $scope.operator = '';
-      if ($scope.operator == 'Add') {
-        advancedCalculator.add()
-      } else  if ($scope.operator == 'Subtract') {
-        advancedCalculator.subtract()
-      } else if ($scope.operator == 'Multiply') {
-        advancedCalculator.multiply()
-      } else if ($scope.operator == 'Divide') {
-        advancedCalculator.divide()
-      }
-      $scope.advancedCalculator = new Calculator();
     });
