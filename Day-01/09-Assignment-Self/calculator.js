@@ -28,8 +28,20 @@ Calculator.prototype.divide = function() {
 //View
 angular
     .module('calculator', [])
-    .run(function($rootScope) {
-        window.rootScope = $rootScope;
-        //console.log(arguments);
-        $rootScope.calculator = new Calculator();
+    .controller('calcController1', function($scope) {
+      $scope.calculator = new Calculator();
+    })
+    .controller('calcController2', function($scope) {
+
+      $scope.operator = '';
+      if ($scope.operator == 'Add') {
+        advancedCalculator.add()
+      } else  if ($scope.operator == 'Subtract') {
+        advancedCalculator.subtract()
+      } else if ($scope.operator == 'Multiply') {
+        advancedCalculator.multiply()
+      } else if ($scope.operator == 'Divide') {
+        advancedCalculator.divide()
+      }
+      $scope.advancedCalculator = new Calculator();
     });
