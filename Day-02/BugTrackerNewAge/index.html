@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Bug Tracker</title>
+        <title>Bug Tracker New Age</title>
         <link rel="stylesheet" type="text/css" href="app.css">
         <link rel="stylesheet" type="text/css" href="spectre.min.css">
         <script type="text/javascript" src="jquery-1.12.4.min.js"></script>
@@ -12,6 +12,7 @@
         <script type="text/javascript" src="BugTracker.js"></script>
         <script type="text/javascript" src="Bug.js"></script>
         <script type="text/javascript" src="BugController.js"></script>
+        <script type="text/javascript" src="moment.js"></script>
         <script type="text/javascript" src="BugFilter.js"></script>
         <script type="text/javascript" src="BugValues.js"></script>
 
@@ -33,88 +34,99 @@
         </script>
     </head>
     <body ng-app="bugTracker" class="container">
-        <h1>Bug Tracker</h1>
-        <hr>
+        <h2>Bug Tracker New Age</h2>
         <div class="content " ng-controller="bugCountController">
             <section class="stats">
-                <span>{{bt.closedBugs}}</span>
+                <span>{{bt.bugs | toClosedCount}}</span>
                 <span>
                     /
                 </span>
                 <span>{{bt.bugs.length}}</span>
             </section>
+            <!-- divider element -->
+            <div class="divider"></div>
             <section class="search">
-							<div class="form-group">
-								<label class="form-label" for="">Search :</label>
-                <input class="form-input" type="text" ng-model="searchBug.description">
-								<div class="form-group">
-						        <label class="form-checkbox">
-						            <input type="checkbox" ng-model="searchBug.closed"/>
-						            <i class="form-icon"></i>  Is Closed
-						        </label>
-						    </div>
-                <input class="btn btn-default" type="button" value="Show All" ng-click="searchBug.closed=''">
-							</div>
+                <div class="form-group columns">
+                    <div class="column col-8">
+                        <label class="form-label" for="">Search :</label>
+                        <input class="form-input" type="text" ng-model="searchBug.description">
+                    </div>
+                    <div class="column col-4">
+                        <label class="form-checkbox">
+                            <input type="checkbox" ng-model="searchBug.closed"/>
+                            <i class="form-icon"></i>
+                            Is Closed
+                        </label>
+                        <input class="btn btn-default" type="button" value="Show All" ng-click="searchBug.closed=''">
+                    </div>
+                </div>
             </section>
-            <section class="sort">
-							<div class="form-group">
-								<label class="form-label" for="">Order By :</label>
-						    <div class="form-group">
-						        <select class="form-select" ng-model="bugSortBy">
-						            <option>Choose an option</option>
-						            <option>title</option>
-						            <option>description</option>
-						            <option>closed</option>
-						            <option>created</option>
-						        </select>
-						    </div>
-								<div class="form-group">
-						        <label class="form-checkbox">
-						            <input type="checkbox" ng-model="bugSortOrder"/>
-						            <i class="form-icon"></i>  Descending
-						        </label>
-						    </div>
 
-                <!-- <label class="form-checkbox" for="">Descending ? :</label>
-                <input type="checkbox" ng-model="bugSortOrder"> -->
-							</div>
+            <section class="sort">
+                <div class="form-group">
+                    <label class="form-label" for="">Order By :</label>
+                    <div class="form-group">
+                        <select class="form-select" ng-model="bugSortBy">
+                            <option>Choose an option</option>
+                            <option>title</option>
+                            <option>description</option>
+                            <option>closed</option>
+                            <option>created</option>
+                        </select>
+                        <label class="form-checkbox">
+                            <input type="checkbox" ng-model="bugSortOrder"/>
+                            <i class="form-icon"></i>
+                            Descending
+                        </label>
+                    </div>
+                </div>
             </section>
             <div class="section edit">
-							<div class="form-group">
-								<label for="">Bug :</label><br>
-                <input class="form-input" type="text" ng-model="newBugTitle">
-                <br>
-                <textarea class="form-input" ng-model="newBugDescription"></textarea></br>
-                <input class="btn btn-primary" type="button" value="Add New" ng-click="createBug()">
-							</div>
+                <div class="form-group">
+                    <label class="form-label" for="">Bug :</label>
+                    <input class="form-input" type="text" placeholder="Title" ng-model="newBugTitle">
+                    <br>
+                        <textarea class="form-input" placeholder="Description" ng-model="newBugDescription"></textarea>
+                    </br>
+                    <input class="btn btn-primary" type="button" value="Add New" ng-click="createBug()">
+                </div>
             </div>
+            <!-- divider element -->
+            <div class="divider"></div>
             <section class="list-group">
-							<table class="table table-striped table-hover">
-							    <thead>
-							        <tr>
-							            <th></th>
-							            <th>ID</th>
-							            <th>Title</th>
-							            <th>Description</th>
-							            <th>Created</th>
-							            <th>State</th>
-							        </tr>
-							    </thead>
-							    <tbody>
-							        <tr ng-repeat="bug in (bt.bugs | filter:searchBug | orderBy:bugSortBy:bugSortOrder)" class="selected">
-							            <td><input type="checkbox" ng-change='addToSelectedBugs(bug)' ng-model="bug.isSelected"></td>
-							            <td>{{bug.id}}</td>
-							            <td>{{bug.title | uppercase}}</td>
-							            <td>{{bug.description | trimText}}</td>
-							            <td>{{bug.created | date}}</td>
-							            <td><span class="label label-primary">{{bug.closed ? "Closed" : "Open"}}</span></td>
-							        </tr>
-							    </tbody>
-							</table>
-							<br/>
+                <table class="table table-striped table-hover" ng-if="bt.bugs.length > 1">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Created</th>
+                            <th>State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="bug in (bt.bugs | filter:searchBug | orderBy:bugSortBy:bugSortOrder)" class="selected">
+                            <td><input type="checkbox" ng-change='addToSelectedBugs(bug)' ng-model="bug.isSelected"></td>
+                            <td>{{bug.id}}</td>
+                            <td>{{bug.title | uppercase}}</td>
+                            <td>{{bug.description | trimText}}</td>
+                            <td>{{bug.created | howLongBack}}</td>
+                            <td>
+                                <span class="label label-primary">{{bug.closed ? "Closed" : "Open"}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty" ng-if="bt.bugs.length < 1">
+                    <i class="icon icon-people"></i>
+                    <p class="empty-title">You have no bugs right now.</p>
+                    <p class="empty-meta">Click the Add New button to create a default bug.</p>
+                </div>
+                <br/>
                 <input type="button" class="btn btn-success" value="Close Bugs" ng-click="closeBugs()">
                 <input type="button" class="btn btn-danger" value="Delete Bugs" ng-click="removeBugs()">
-								<!-- removeBug -->
+                <!-- removeBug -->
             </section>
         </div>
     </body>

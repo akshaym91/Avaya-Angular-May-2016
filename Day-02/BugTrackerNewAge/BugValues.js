@@ -1,4 +1,6 @@
 bugTrackerApp.value('appDefaults', {
-  name: 'Default Task',
+  title: 'Default Task',
   description: 'Something went wrong, app crashed.'
 });
+
+utils.value('momentApi', window.moment);

@@ -1,1 +1,1 @@
-var bugTrackerApp = angular.module('bugTracker', []);
+var bugTrackerApp = angular.module('bugTracker', ['utils']);
